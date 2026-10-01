@@ -1,0 +1,103 @@
+@property --zillion-logo-turn {
+  syntax: '<angle>';
+  inherits: true;
+  initial-value: 0deg;
+}
+
+.wrap {
+  --zillion-logo-turn: 0deg;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  height: 40px;
+  position: relative;
+  perspective: 760px;
+  perspective-origin: 50% 42%;
+  overflow: visible;
+  transition: --zillion-logo-turn 1.15s cubic-bezier(0.45, 0.05, 0.2, 1);
+}
+
+.wrap:hover,
+.wrap:focus-visible {
+  --zillion-logo-turn: 180deg;
+}
+
+.wrap::before {
+  content: '';
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: 0;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(31, 41, 55, 0.2);
+  filter: blur(3px);
+  pointer-events: none;
+  opacity: calc(0.14 + 0.14 * abs(sin(var(--zillion-logo-turn))));
+  transform: translateX(calc(sin(var(--zillion-logo-turn)) * -3px))
+    translateY(calc(2px + 1.5px * abs(sin(var(--zillion-logo-turn)))))
+    scaleX(calc(0.98 - 0.14 * abs(sin(var(--zillion-logo-turn)))));
+}
+
+.rotor {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  transform-origin: center center;
+  transform: rotateX(calc(sin(var(--zillion-logo-turn)) * 7deg))
+    rotateY(calc(sin(var(--zillion-logo-turn)) * 42deg));
+}
+
+.mark {
+  display: block;
+  height: 100%;
+  width: auto;
+  max-width: 168px;
+  object-fit: contain;
+  user-select: none;
+}
+
+.wrap[data-reduced='true'],
+.wrap[data-reduced='true']:hover,
+.wrap[data-reduced='true']:focus-visible {
+  --zillion-logo-turn: 0deg;
+  transition: none;
+}
+
+.wrap[data-reduced='true'] .rotor,
+.wrap[data-reduced='true']:hover .rotor,
+.wrap[data-reduced='true']:focus-visible .rotor {
+  transform: none;
+}
+
+.wrap[data-reduced='true']::before,
+.wrap[data-reduced='true']:hover::before,
+.wrap[data-reduced='true']:focus-visible::before {
+  opacity: 0.18;
+  transform: translateY(2px) scaleX(0.98);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wrap,
+  .wrap:hover,
+  .wrap:focus-visible {
+    --zillion-logo-turn: 0deg;
+    transition: none;
+  }
+
+  .rotor,
+  .wrap:hover .rotor,
+  .wrap:focus-visible .rotor {
+    transform: none;
+  }
+
+  .wrap::before,
+  .wrap:hover::before,
+  .wrap:focus-visible::before {
+    opacity: 0.18;
+    transform: translateY(2px) scaleX(0.98);
+  }
+}
